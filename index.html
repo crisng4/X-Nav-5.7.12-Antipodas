@@ -1,25 +1,52 @@
 <html>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.js"></script>
+	<script src="modernizr-custom.js" type="text/javascript"></script>
 	<head>
- 		<title>Las Antipodas</title>
+ 		<title>Antipode(5.7.12)</title>
 		<style>
-			#map {
-				width:500px;
+			#map1 {
+				width:auto;
 				height: 400px;
 			}
+
+			#map2 {
+				width:auto ;
+				height: 400px;
+			}
+
  		</style>
  	</head>
 	<body>
-        	<p id='map'></p>
-  	        <script type="text/javascript" charset="utf-8">
-            function initMap(){
-                var mapDiv = document.getElementById("map");
-				var map = new google.maps.Map(mapDiv, {
-					center: {lat: 40.283743650362996, lng: -3.8191530513763428},
-					zoom: 15
+		<h1>Current position</h1>
+		<p id='map1'></p>
+		<hr>
+		<h1>Antipode</h1>
+		<p id='map2'></p>
+
+		<script type="text/javascript" charset="utf-8">
+
+			function initMap(){
+				if(Modernizr.geolocation){
+				navigator.geolocation.getCurrentPosition(function(position) {
+          var current = document.getElementById("map1");
+  				var antipode = document.getElementById("map2");
+
+  				var map = new google.maps.Map(current, {
+  					center: {lat: position.coords.latitude, lng: position.coords.longitude},
+  					zoom: 4
+  					});
+
+  				var antipode = new google.maps.Map(antipode, {
+  					center: {lat: -position.coords.latitude, lng: 180 - position.coords.longitude},
+  					zoom: 4
+  					});
 				});
- 			}
- 		</script>
+				}else{
+					console.log("Error");
+				}
+			}
+
+		</script>
 		<script src = "https://maps.googleapis.com/maps/api/js?callback=initMap" async defer></script>
+
 	</body>
 </html>
